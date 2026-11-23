@@ -1,0 +1,87 @@
+[
+  {
+    "id": "louis-trichardt-memorial",
+    "name": "Louis Trichardt Memorial Hospital",
+    "tier": "district",
+    "district": "Vhembe",
+    "subDistrict": "Makhado",
+    "address": null,
+    "phone": null,
+    "lastVerified": null,
+    "departments": [
+      {
+        "name": "Optometry",
+        "fields": {
+          "days": {
+            "label": "Service days",
+            "value": null,
+            "status": "unconfirmed",
+            "source": null,
+            "confirmedOn": null
+          },
+          "hours": {
+            "label": "Operating hours",
+            "value": null,
+            "status": "unconfirmed",
+            "source": null,
+            "confirmedOn": null
+          },
+          "referral": {
+            "label": "Referral required",
+            "value": null,
+            "status": "unconfirmed",
+            "source": null,
+            "confirmedOn": null
+          },
+          "feeTier": {
+            "label": "Fee tier (UPFS)",
+            "value": null,
+            "status": "unconfirmed",
+            "source": null,
+            "confirmedOn": null
+          },
+          "documents": {
+            "label": "Documents to bring",
+            "value": null,
+            "status": "unconfirmed",
+            "source": null,
+            "confirmedOn": null
+          },
+          "ownFrames": {
+            "label": "Own frames policy",
+            "value": null,
+            "status": "unconfirmed",
+            "source": null,
+            "confirmedOn": null
+          },
+          "complaints": {
+            "label": "Complaints route",
+            "value": "OHSC toll-free 0809116472, complaints@ohsc.org.za",
+            "status": "found-online",
+            "source": "Health-e / OHSC complaints guidance, found 2026-11-22",
+            "confirmedOn": null
+          }
+        }
+      }
+    ],
+    "departmentsReportedIn2011": [
+      "Accident and Emergency",
+      "Medical and Surgical",
+      "Maternity",
+      "Paediatrics",
+      "Reproductive Health",
+      "HIV and TB",
+      "Laboratory",
+      "Pharmacy",
+      "Physiotherapy",
+      "Speech and Audiology",
+      "Social Work",
+      "Dietetics",
+      "Clinical Psychology",
+      "Optometry",
+      "Radiology",
+      "Dental and Oral Health"
+    ],
+    "departmentsSource": "Portfolio Committee on Health oversight report, August 2011. Needs on-site confirmation."
+  }
+]

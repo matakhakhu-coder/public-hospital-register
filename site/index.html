@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Public Hospital Register</title>
+<style>
+  :root {
+    --bg: #fafaf7; --fg: #1c1d1a; --muted: #6b6d66; --line: #e2e2da; --card: #ffffff;
+    --ok: #2f7d4f; --found: #b07a12; --none: #a33a3a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141513; --fg: #ecece6; --muted: #9a9c94; --line: #2c2e29; --card: #1b1c19;
+            --ok: #5cc184; --found: #e0aa3e; --none: #e07070; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.15rem; margin: 32px 0 8px; }
+  h3 { font-size: 1rem; margin: 20px 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .notice { border: 1px solid var(--line); background: var(--card); padding: 10px 14px;
+            border-radius: 8px; font-size: 0.92rem; color: var(--muted); }
+  .summary { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+  .stat { flex: 1 1 140px; border: 1px solid var(--line); background: var(--card);
+          border-radius: 8px; padding: 10px 14px; }
+  .stat b { display: block; font-size: 1.6rem; }
+  .card { border: 1px solid var(--line); background: var(--card); border-radius: 8px;
+          padding: 12px 16px; margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  td, th { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; }
+  .tag { font-size: 0.8rem; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+  .confirmed { color: var(--ok); } .found-online { color: var(--found); } .unconfirmed { color: var(--none); }
+  pre { white-space: pre-wrap; font: inherit; margin: 0; }
+  details { border-top: 1px solid var(--line); padding: 8px 0; }
+  summary { cursor: pointer; font-weight: 500; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Public Hospital Register</h1>
+  <p class="sub">What South African public hospital departments actually offer, confirmed and dated.</p>
+  <p class="notice">Independent project by Zone2Freelancers. Not an official channel of any health department. Always confirm with the facility before travelling. Fields marked "unconfirmed" have not been verified.</p>
+
+  <div class="summary" id="summary"></div>
+  <h2>Hospitals</h2>
+  <div id="hospitals">Loading...</div>
+  <h2>Session log</h2>
+  <div id="logs">Loading...</div>
+  <footer>Data comes from the register files in the project repository. Every field shows its status, source and date.</footer>
+</main>
+
+<script>
+(function () {
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+  function load(path) {
+    return fetch(path).then(function (r) { return r.json(); });
+  }
+
+  load("data/hospitals.json").then(function (hospitals) {
+    var counts = { "confirmed": 0, "found-online": 0, "unconfirmed": 0 };
+    var wrap = document.getElementById("hospitals");
+    wrap.textContent = "";
+
+    hospitals.forEach(function (h) {
+      var card = el("div", "card");
+      card.appendChild(el("h3", "", h.name));
+      card.appendChild(el("div", "sub", [h.tier, h.district + " district", h.subDistrict + " sub-district"].join(" | ")));
+      card.appendChild(el("div", "sub", "Last verified: " + (h.lastVerified || "not yet verified")));
+
+      (h.departments || []).forEach(function (d) {
+        card.appendChild(el("h3", "", d.name));
+        var t = el("table");
+        var head = el("tr");
+        ["Field", "Value", "Status", "Source and date"].forEach(function (x) { head.appendChild(el("th", "", x)); });
+        t.appendChild(head);
+        Object.keys(d.fields).forEach(function (k) {
+          var f = d.fields[k];
+          counts[f.status] = (counts[f.status] || 0) + 1;
+          var tr = el("tr");
+          tr.appendChild(el("td", "", f.label || k));
+          tr.appendChild(el("td", "", f.value === null ? "Not yet known" : String(f.value)));
+          var st = el("td"); st.appendChild(el("span", "tag " + f.status, f.status)); tr.appendChild(st);
+          tr.appendChild(el("td", "", f.source ? f.source + (f.confirmedOn ? " (" + f.confirmedOn + ")" : "") : "-"));
+          t.appendChild(tr);
+        });
+        card.appendChild(t);
+      });
+      wrap.appendChild(card);
+    });
+
+    var s = document.getElementById("summary");
+    [["confirmed", "Confirmed"], ["found-online", "Found online"], ["unconfirmed", "Unconfirmed"]].forEach(function (p) {
+      var box = el("div", "stat");
+      var b = el("b", p[0], String(counts[p[0]] || 0));
+      box.appendChild(b); box.appendChild(el("span", "sub", p[1]));
+      s.appendChild(box);
+    });
+  }).catch(function () {
+    document.getElementById("hospitals").textContent = "Could not load register data.";
+  });
+
+  load("data/logs.json").then(function (logs) {
+    var wrap = document.getElementById("logs");
+    wrap.textContent = "";
+    logs.forEach(function (l, i) {
+      var d = el("details");
+      if (i === 0) d.open = true;
+      d.appendChild(el("summary", "", l.name));
+      d.appendChild(el("pre", "", l.text));
+      wrap.appendChild(d);
+    });
+  }).catch(function () {
+    document.getElementById("logs").textContent = "Could not load session log.";
+  });
+})();
+</script>
+</body>
+</html>
