@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "louis-trichardt-memorial",
   "name": "Louis Trichardt Memorial Hospital",
   "tier": "district",
@@ -17,7 +17,7 @@
         "feeTier":    { "label": "Fee tier (UPFS)",       "value": null, "status": "unconfirmed", "source": null, "confirmedOn": null },
         "documents":  { "label": "Documents to bring",    "value": null, "status": "unconfirmed", "source": null, "confirmedOn": null },
         "ownFrames":  { "label": "Own frames policy",     "value": null, "status": "unconfirmed", "source": null, "confirmedOn": null },
-        "complaints": { "label": "Complaints route",      "value": "OHSC toll-free 0809116472, complaints@ohsc.org.za", "status": "found-online", "source": "Health-e / OHSC complaints guidance, found 2026-11-22", "confirmedOn": null }
+        "complaints": { "label": "Complaints route",      "value": "OHSC toll-free 0809116472, complaints@ohsc.org.za", "status": "found-online", "source": "OHSC complaints guide, exact URL not captured, re-verify at ohsc.org.za", "confirmedOn": null }
       }
     }
   ],
@@ -29,3 +29,4 @@
   ],
   "departmentsSource": "Portfolio Committee on Health oversight report, August 2011. Needs on-site confirmation."
 }
+
